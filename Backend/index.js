@@ -23,9 +23,7 @@ app.listen(process.env.PORT || 6000, () => {
   console.log(`Listening at Port: ${process.env.PORT || 6000}`);
 });
 
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "Working....",
-  });
-});
+//import router
+
+import userRouter from "./routes/user.routes.js";
+app.use("/api/user", userRouter);
