@@ -1,9 +1,26 @@
 import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
+//connect to mongodb
+dotenv.config({ path: "./.env" });
+
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    dbName: "HomeEase",
+  })
+  .then(() => {
+    console.log("Database Connected!");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+//listen server
 const app = express();
 
-app.listen(4000, () => {
-  console.log("Listening at Port: 4000");
+app.listen(process.env.PORT || 6000, () => {
+  console.log(`Listening at Port: ${process.env.PORT || 6000}`);
 });
 
 app.get("/", (req, res) => {
