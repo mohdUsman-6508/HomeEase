@@ -12,10 +12,6 @@ const signup = async (req, res, next) => {
       newUser,
     });
   } catch (error) {
-    // res.status(404).json({
-    //   success: false,
-    //   message: error.message,
-    // });
     next(error);
   }
 };
