@@ -78,7 +78,7 @@ function SignUp() {
           disabled={loading}
           className="bg-slate-700 hover:opacity-95 disabled:opacity-80 p-3 w-1/3 rounded-lg text-white shadow-sm"
         >
-          {loading ? "Loading..." : "SIGN UP"}
+          {loading ? "LOADING..." : "SIGN UP"}
         </button>
         <button className="bg-red-700 hover:opacity-95 disabled:opacity-80 p-3 w-1/3 rounded-lg text-white shadow-sm">
           CONTINUE WITH GOOGLE

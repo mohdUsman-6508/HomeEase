@@ -41,6 +41,7 @@ const signin = async (req, res, next) => {
         rest,
       });
   } catch (err) {
+    next(err);
     res.status(404).json({
       success: false,
       message: "Error:Unable to sign in",
