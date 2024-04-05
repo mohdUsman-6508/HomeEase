@@ -5,9 +5,7 @@ import dotenv from "dotenv";
 const app = express();
 
 //middlewares
-
 app.use(express.json());
-
 //connect to mongodb
 dotenv.config({ path: "./.env" });
 
@@ -23,7 +21,6 @@ mongoose
   });
 
 //listen server
-
 app.listen(process.env.PORT || 6000, () => {
   console.log(`Listening at Port: ${process.env.PORT || 6000}`);
 });
@@ -32,6 +29,8 @@ app.listen(process.env.PORT || 6000, () => {
 
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
+//http:localhost:4000/api/
+
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 //

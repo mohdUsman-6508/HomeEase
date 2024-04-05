@@ -25,7 +25,7 @@ function SignUp() {
           className="p-3 rounded-md w-1/3 focus:outline-none  shadow-sm"
         />
         <input
-          type="text"
+          type="password"
           name=""
           id=""
           placeholder="Password"

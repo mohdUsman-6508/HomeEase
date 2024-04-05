@@ -21,6 +21,7 @@ function Header() {
           />
           <FaSearch className="text-slate-600" />
         </form>
+
         <ul className="flex justify-center items-center gap-4 sm:gap-6">
           <Link to="/">
             <li className="hidden sm:inline text-slate-700  hover:text-slate-800">
