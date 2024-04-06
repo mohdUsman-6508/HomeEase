@@ -48,4 +48,52 @@ const signin = async (req, res, next) => {
   }
 };
 
-export { signup, signin };
+const generateToken = async (user) => {
+  const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
+  const { password: pswrd, ...rest } = user._doc;
+
+  return { token, rest };
+};
+//
+const google = async (req, res, next) => {
+  //CHECK USER EXIST OR NOT
+  // IF USER EXIST ->
+  ///MAKE TOKEN AND SEND COOKIE TO CLIENT
+  // IF USER NOT EXIST ->
+  ///MAKE NEW USER ,GENERATE RANDOM PASSWORD
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+
+    if (user) {
+      const { token, rest } = await generateToken(user);
+      return res
+        .status(200)
+        .cookie("AccessToken_:", token, { httpOnly: true })
+        .json(rest);
+    } else {
+      const generateRandomPassword = Math.random().toString(36).slice(-10);
+      const hashedPassword = bcryptjs.hashSync(generateRandomPassword, 10);
+      const userName =
+        req.body.name.split(" ").join("").toLowerCase() +
+        Math.random().toString(36).slice(-4);
+      const createUser = new User({
+        username: userName,
+        email,
+        password: hashedPassword,
+        avatar: req.body.photo,
+      });
+
+      await createUser.save();
+      const { token, rest } = await generateToken(user);
+      return res
+        .status(200)
+        .cookie("AccessToken_:", token, { httpOnly: true })
+        .json(rest);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { signup, signin, google };

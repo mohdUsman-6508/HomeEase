@@ -6,6 +6,7 @@ import {
   signInFailure,
   signInSuccess,
 } from "../app/user/user.Slice.js";
+import OAuth from "../components/OAuth.jsx";
 
 function SignIn() {
   const [formData, setFormData] = useState({});
@@ -87,9 +88,7 @@ function SignIn() {
         >
           {loading ? "LOADING..." : "SIGN IN"}
         </button>
-        <button className="bg-red-700 hover:opacity-95 disabled:opacity-80 p-3 w-1/3 rounded-lg text-white shadow-sm">
-          CONTINUE WITH GOOGLE
-        </button>
+        <OAuth />
       </form>
       <div className=" flex gap-3 justify-start items-start  w-1/3 p-2">
         <span className="text-black">{`Don't have an account?`}</span>

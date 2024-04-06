@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./user/user.Slice.js";
-import { useReducer } from "react";
+
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -18,7 +18,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 //persistReducer banaya
 
 export const store = configureStore({
-  reducer: persistedReducer, //useReducer ke jagah
+  reducer: persistedReducer, //userReducer ke jagah
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
