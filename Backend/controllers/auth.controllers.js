@@ -37,7 +37,6 @@ const signin = async (req, res, next) => {
       })
       .status(201)
       .json({
-        success: true,
         rest,
       });
   } catch (err) {
