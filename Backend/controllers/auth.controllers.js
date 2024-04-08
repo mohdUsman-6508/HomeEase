@@ -32,7 +32,7 @@ const signin = async (req, res, next) => {
     const token = jwt.sign({ id: validUser._id }, process.env.SECRET_KEY);
     const { password: pswrd, ...rest } = validUser._doc;
     res
-      .cookie("Token:", token, {
+      .cookie("accessToken", token, {
         maxAge: 60 * 60 * 1000,
       })
       .status(201)
