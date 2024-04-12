@@ -13,13 +13,14 @@ import {
   updateUserFailure,
 } from "../app/user/user.Slice.js";
 function Profile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const imageFileRef = useRef(null);
   const [imageFile, setImageFile] = useState(undefined);
 
   const [filePercentage, setFilePercentage] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
+  const [update, setUpdate] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -70,12 +71,14 @@ function Profile() {
         }
       );
       const data = await res.json();
-      console.log("data", data);
+      // console.log("data", data);
+      // console.log(data.message, data.success);
       if (data?.success === false) {
         dispatch(updateUserFailure(data?.message));
         return;
       }
       dispatch(updateUserSuccess(data));
+      setUpdate(true);
     } catch (error) {
       console.log(error);
       dispatch(updateUserFailure(error?.message));
@@ -89,6 +92,7 @@ function Profile() {
     });
     // console.log(formData);
   };
+  console.log(error);
 
   return (
     <div className="p-4 max-w-lg mx-auto ">
@@ -152,8 +156,11 @@ function Profile() {
           onChange={handleChange}
         />
 
-        <button className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-85">
-          update
+        <button
+          disabled={loading}
+          className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-85"
+        >
+          {loading ? "Loading..." : "UPDATE"}
         </button>
       </form>
       <div className="flex justify-between mt-5">
@@ -164,6 +171,8 @@ function Profile() {
           Delete Account
         </span>
       </div>
+      <p className="text-red-700">{error ? error : ""}</p>
+      <p className="text-green-700">{update ? "Updated successfully!" : ""}</p>
     </div>
   );
 }
