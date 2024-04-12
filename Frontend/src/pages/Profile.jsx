@@ -48,11 +48,37 @@ function Profile() {
     );
   };
 
+  const handleUpdate = async (e) => {
+    try {
+      e.preventDefault();
+      //  console.log(currentUser.rest)
+      const res = await fetch(`/api/user/update/${currentUser.rest._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+    // console.log(formData);
+  };
+
   return (
     <div className="p-4 max-w-lg mx-auto ">
       <h1 className="text-3xl font-semibold text-center my-6">Profile</h1>
 
-      <form action="" className="flex flex-col gap-4">
+      <form onSubmit={handleUpdate} action="" className="flex flex-col gap-4">
         <input
           onChange={(e) => {
             setImageFile(e.target.files[0]);
@@ -65,7 +91,7 @@ function Profile() {
           onClick={() => {
             imageFileRef.current.click();
           }}
-          src={formData.avatar || currentUser.avatar}
+          src={formData.avatar || currentUser.rest.avatar}
           alt="profile"
           className="w-24 h-24 rounded-full object-cover cursor-pointer self-center mt-2"
         />
@@ -87,20 +113,25 @@ function Profile() {
         <input
           type="text"
           placeholder="Username"
+          defaultValue={currentUser.rest.username}
           id="username"
           className="border p-3 rounded-xl focus:outline-none shadow-sm"
+          onChange={handleChange}
         />
         <input
           type="text"
           placeholder="Email"
+          defaultValue={currentUser.rest.email}
           id="email"
           className="border p-3 rounded-xl focus:outline-none shadow-sm"
+          onChange={handleChange}
         />
         <input
           type="password"
           placeholder="Password"
           id="password"
           className="border p-3 rounded-xl focus:outline-none shadow-sm"
+          onChange={handleChange}
         />
 
         <button className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-85">
