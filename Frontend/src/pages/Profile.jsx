@@ -1,14 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-
 import { app } from "../firebase";
-
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+} from "../app/user/user.Slice.js";
 function Profile() {
   const { currentUser } = useSelector((state) => state.user);
   const imageFileRef = useRef(null);
@@ -17,6 +20,8 @@ function Profile() {
   const [filePercentage, setFilePercentage] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (imageFile) {
@@ -51,18 +56,29 @@ function Profile() {
   const handleUpdate = async (e) => {
     try {
       e.preventDefault();
-      //  console.log(currentUser.rest)
-      const res = await fetch(`/api/user/update/${currentUser.rest._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      dispatch(updateUserStart());
+      // console.log(currentUser);
+      // console.log(currentUser._id);
+      const res = await fetch(
+        `/api/user/update/${currentUser?.rest?._id || currentUser._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const data = await res.json();
-      console.log(data);
+      console.log("data", data);
+      if (data?.success === false) {
+        dispatch(updateUserFailure(data?.message));
+        return;
+      }
+      dispatch(updateUserSuccess(data));
     } catch (error) {
       console.log(error);
+      dispatch(updateUserFailure(error?.message));
     }
   };
 
@@ -91,7 +107,9 @@ function Profile() {
           onClick={() => {
             imageFileRef.current.click();
           }}
-          src={formData.avatar || currentUser.rest.avatar}
+          src={
+            formData.avatar || currentUser?.avatar || currentUser?.rest?.avatar
+          }
           alt="profile"
           className="w-24 h-24 rounded-full object-cover cursor-pointer self-center mt-2"
         />
@@ -113,7 +131,7 @@ function Profile() {
         <input
           type="text"
           placeholder="Username"
-          defaultValue={currentUser.rest.username}
+          defaultValue={currentUser?.rest?.username || currentUser?.username}
           id="username"
           className="border p-3 rounded-xl focus:outline-none shadow-sm"
           onChange={handleChange}
@@ -121,7 +139,7 @@ function Profile() {
         <input
           type="text"
           placeholder="Email"
-          defaultValue={currentUser.rest.email}
+          defaultValue={currentUser?.rest?.email || currentUser?.email}
           id="email"
           className="border p-3 rounded-xl focus:outline-none shadow-sm"
           onChange={handleChange}

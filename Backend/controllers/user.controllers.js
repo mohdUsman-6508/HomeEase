@@ -14,6 +14,7 @@ const updateUser = async (req, res, next) => {
 
   try {
     const id = req.params?.id;
+    console.log(id);
     const { username, email, password, avatar } = req.body;
 
     if (req.user.id !== id) {

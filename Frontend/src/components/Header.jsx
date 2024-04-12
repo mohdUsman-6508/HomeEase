@@ -39,7 +39,7 @@ function Header() {
             {currentUser ? (
               <img
                 className="w-8 h-8 rounded-full object-cover"
-                src={currentUser.avatar}
+                src={currentUser?.rest?.avatar || currentUser?.avatar}
                 alt="avatar"
               />
             ) : (

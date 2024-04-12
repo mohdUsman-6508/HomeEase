@@ -51,7 +51,7 @@ const signin = async (req, res, next) => {
 const generateToken = async (user) => {
   const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
   const { password: pswrd, ...rest } = user._doc;
-
+  console.log(rest);
   return { token, rest };
 };
 //
@@ -69,7 +69,7 @@ const google = async (req, res, next) => {
       const { token, rest } = await generateToken(user);
       return res
         .status(200)
-        .cookie("AccessToken_:", token, { httpOnly: true })
+        .cookie("accessToken", token, { httpOnly: true, secure: true })
         .json(rest);
     } else {
       const generateRandomPassword = Math.random().toString(36).slice(-10);
@@ -88,7 +88,7 @@ const google = async (req, res, next) => {
       const { token, rest } = await generateToken(user);
       return res
         .status(200)
-        .cookie("AccessToken_:", token, { httpOnly: true })
+        .cookie("accessToken", token, { httpOnly: true, secure: true })
         .json(rest);
     }
   } catch (error) {
