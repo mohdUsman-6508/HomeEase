@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -11,7 +12,11 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../app/user/user.Slice.js";
+
 function Profile() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const imageFileRef = useRef(null);
@@ -21,8 +26,10 @@ function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [update, setUpdate] = useState(false);
+  const [deleteUser, setDeleteUser] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (imageFile) {
@@ -85,6 +92,31 @@ function Profile() {
     }
   };
 
+  const handleDeleteClick = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(
+        `/api/user/delete/${currentUser?.rest?._id || currentUser._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await res.json();
+      if (data.success == false) {
+        dispatch(deleteUserFailure());
+      }
+      setDeleteUser(true);
+      setTimeout(() => {
+        navigate("/signin");
+      }, 1000);
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure());
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -92,7 +124,6 @@ function Profile() {
     });
     // console.log(formData);
   };
-  console.log(error);
 
   return (
     <div className="p-4 max-w-lg mx-auto ">
@@ -167,12 +198,18 @@ function Profile() {
         <span className="text-green-700 cursor-pointer hover:text-green-600 ">
           Sign Out
         </span>
-        <span className="text-red-700 cursor-pointer  hover:text-red-600">
+        <span
+          onClick={handleDeleteClick}
+          className="text-red-700 cursor-pointer  hover:text-red-600"
+        >
           Delete Account
         </span>
       </div>
       <p className="text-red-700">{error ? error : ""}</p>
       <p className="text-green-700">{update ? "Updated successfully!" : ""}</p>
+      <p className="text-green-700">
+        {deleteUser ? "Deleted successfully!" : ""}
+      </p>
     </div>
   );
 }

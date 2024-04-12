@@ -14,7 +14,7 @@ const updateUser = async (req, res, next) => {
 
   try {
     const id = req.params?.id;
-    console.log(id);
+
     const { username, email, password, avatar } = req.body;
 
     if (req.user.id !== id) {
@@ -44,4 +44,27 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-export { user, updateUser };
+const deleteUser = async (req, res, next) => {
+  try {
+    const idParams = req.params?.id;
+    const objectId = req.user?._id;
+    const idUser = objectId.toString();
+
+    if (idParams !== idUser) {
+      return res.status(401).json({
+        success: false,
+        message: "wrong id!",
+      });
+    }
+
+    const deletedUser = await User.findByIdAndDelete(idUser);
+    res.status(201).clearCookie("accessToken").json({
+      deletedUser,
+    });
+
+    console.log("deleted", deletedUser);
+  } catch (error) {
+    next(error);
+  }
+};
+export { user, updateUser, deleteUser };
