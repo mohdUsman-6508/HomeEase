@@ -15,6 +15,9 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
+  signOutUserStart,
+  signOutUserFailure,
+  signOutUserSuccess,
 } from "../app/user/user.Slice.js";
 
 function Profile() {
@@ -117,6 +120,22 @@ function Profile() {
     }
   };
 
+  const handleSignOut = async (e) => {
+    dispatch(signOutUserStart());
+    const res = await fetch(`api/auth/signout`, {
+      method: "GET", //by default get
+    });
+
+    const data = await res.json();
+    if (!data.success) {
+      dispatch(signOutUserFailure());
+      return;
+    }
+
+    dispatch(signOutUserSuccess());
+    navigate("/signin");
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -195,7 +214,10 @@ function Profile() {
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-green-700 cursor-pointer hover:text-green-600 ">
+        <span
+          onClick={handleSignOut}
+          className="text-red-700 cursor-pointer hover:text-red-600 "
+        >
           Sign Out
         </span>
         <span
