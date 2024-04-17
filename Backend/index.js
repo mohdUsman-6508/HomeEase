@@ -31,10 +31,12 @@ app.listen(process.env.PORT || 6000, () => {
 
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
+import listingRouter from "./routes/listing.routes.js";
 //http:localhost:4000/api/
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter);
 //
 
 //middleware for handling api error
