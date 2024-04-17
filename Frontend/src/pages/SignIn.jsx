@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -96,7 +96,8 @@ function SignIn() {
           Sign Up
         </Link>
       </div>
-      {error && <p className="text-red-700 mt-6">{error}</p>}
+      {/* {error && <span>{error}</span>} */}
+      {error && <p className="text-red-700 mt-6"> {error}</p>}
     </div>
   );
 }

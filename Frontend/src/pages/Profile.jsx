@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -205,6 +205,13 @@ function Profile() {
           className="border p-3 rounded-xl focus:outline-none shadow-sm"
           onChange={handleChange}
         />
+
+        <Link
+          to="/create-listing"
+          className="bg-green-600 text-white uppercase p-3 text-center rounded-lg hover:opacity-95"
+        >
+          create listing
+        </Link>
 
         <button
           disabled={loading}
