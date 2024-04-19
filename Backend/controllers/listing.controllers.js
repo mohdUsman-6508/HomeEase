@@ -11,4 +11,15 @@ const createListing = async (req, res, next) => {
   }
 };
 
-export { createListing };
+const getListings = async (req, res, next) => {
+  try {
+    const idObject = req.user._id;
+    const id = idObject.toString();
+    const listings = await Listing.find({ userRef: id });
+    res.status(200).json(listings);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createListing, getListings };

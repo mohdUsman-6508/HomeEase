@@ -28,8 +28,10 @@ function CreateListing() {
     offer: false,
     parking: false,
     furnished: false,
+    userRef: currentUser.rest._id,
   });
 
+  console.log(currentUser.rest._id);
   const [files, setFiles] = useState([]);
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -63,7 +65,12 @@ function CreateListing() {
           setUploading(false);
         });
     } else {
-      setImageUploadError("Maximum 7 image can be uploaded");
+      if (formData.imageURLS.length < 1)
+        setImageUploadError("Minimum 1 image is required");
+      else {
+        setImageUploadError("Maximum 7 image can be uploaded");
+      }
+
       setUploading(false);
     }
   };
@@ -148,7 +155,7 @@ function CreateListing() {
         },
         body: JSON.stringify({
           ...formData,
-          userRef: currentUser._id,
+          userRef: currentUser.rest._id,
         }),
       });
 
