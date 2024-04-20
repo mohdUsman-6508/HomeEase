@@ -30,6 +30,8 @@ function Profile() {
   const [formData, setFormData] = useState({});
   const [update, setUpdate] = useState(false);
   const [deleteUser, setDeleteUser] = useState(false);
+  const [listingerror, setShowListingError] = useState(false);
+  const [listings, setListings] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -144,6 +146,20 @@ function Profile() {
     // console.log(formData);
   };
 
+  const handleShowListings = async () => {
+    try {
+      const res = await fetch("/api/listing/getlistings");
+      const data = await res.json();
+      if (data.success == false) {
+        setShowListingError(true);
+        return;
+      }
+      setListings(data);
+    } catch (error) {
+      setShowListingError(true);
+    }
+  };
+
   return (
     <div className="p-4 max-w-lg mx-auto ">
       <h1 className="text-3xl font-semibold text-center my-6">Profile</h1>
@@ -234,11 +250,48 @@ function Profile() {
           Delete Account
         </span>
       </div>
+
       <p className="text-red-700">{error ? error : ""}</p>
       <p className="text-green-700">{update ? "Updated successfully!" : ""}</p>
       <p className="text-green-700">
         {deleteUser ? "Deleted successfully!" : ""}
       </p>
+
+      <button onClick={handleShowListings} className="text-green-700 w-full">
+        Show listings
+      </button>
+      <p className="text-red-700">{listingerror ? "Error:show listing" : ""}</p>
+      {listings &&
+        listings.length > 0 &&
+        listings.map((listing) => (
+          <div key={listing._id} className="">
+            <Link
+              to={"/listing/getlistings"}
+              className="flex justify-between items-center p-3 border border-gray-200 border-r-2 my-3 gap-4"
+            >
+              <img
+                className="w-24 h-20 rounded-md object-cover"
+                src={listing.imageURLS[0]}
+                alt="listing image"
+              />
+              <p className="font-semibold truncate flex-1">{listing.name}</p>
+              <div className="flex flex-col">
+                <span
+                  onClick={handleDeleteClick}
+                  className="text-red-700 uppercase hover:opacity-85"
+                >
+                  Delete
+                </span>
+                <span
+                  onClick={handleUpdate}
+                  className="text-green-700 uppercase hover:opacity-85"
+                >
+                  Edit
+                </span>
+              </div>
+            </Link>
+          </div>
+        ))}
     </div>
   );
 }
