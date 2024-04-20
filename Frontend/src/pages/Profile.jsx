@@ -305,12 +305,11 @@ function Profile() {
                 >
                   Delete
                 </span>
-                <span
-                  onClick={() => handleEditListing(listing._id)}
-                  className="text-green-700 uppercase hover:opacity-85"
-                >
-                  Edit
-                </span>
+                <Link to={`/update-listing/${listing._id}`}>
+                  <span className="text-green-700 uppercase hover:opacity-85">
+                    Edit
+                  </span>
+                </Link>
               </div>
             </Link>
           </div>
