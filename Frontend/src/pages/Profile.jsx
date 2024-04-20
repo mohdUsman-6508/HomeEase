@@ -32,7 +32,9 @@ function Profile() {
   const [deleteUser, setDeleteUser] = useState(false);
   const [listingerror, setShowListingError] = useState(false);
   const [listings, setListings] = useState([]);
+  const [deleteListingError, setDeleteListingError] = useState(false);
 
+  console.log(listings);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -160,6 +162,27 @@ function Profile() {
     }
   };
 
+  const handleDeleteListing = async (id) => {
+    try {
+      const res = await fetch(`/api/listing/deletelisting/${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        setDeleteListingError(true);
+        return;
+      }
+      setListings((listings) =>
+        listings.filter((listing) => listing._id !== id)
+      );
+    } catch (error) {
+      setDeleteListingError(true);
+      console.log(error);
+    }
+  };
+
+  const handleEditListing = async (id) => {};
+
   return (
     <div className="p-4 max-w-lg mx-auto ">
       <h1 className="text-3xl font-semibold text-center my-6">Profile</h1>
@@ -277,13 +300,13 @@ function Profile() {
               <p className="font-semibold truncate flex-1">{listing.name}</p>
               <div className="flex flex-col">
                 <span
-                  onClick={handleDeleteClick}
+                  onClick={() => handleDeleteListing(listing._id)}
                   className="text-red-700 uppercase hover:opacity-85"
                 >
                   Delete
                 </span>
                 <span
-                  onClick={handleUpdate}
+                  onClick={() => handleEditListing(listing._id)}
                   className="text-green-700 uppercase hover:opacity-85"
                 >
                   Edit

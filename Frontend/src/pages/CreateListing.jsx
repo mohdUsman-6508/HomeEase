@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { app } from "../firebase.js";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import {
