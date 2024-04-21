@@ -289,7 +289,7 @@ function Profile() {
         listings.map((listing) => (
           <div key={listing._id} className="">
             <Link
-              to={"/listing/getlistings"}
+              to={`/listing/${listing._id}`}
               className="flex justify-between items-center p-3 border border-gray-200 border-r-2 my-3 gap-4"
             >
               <img
