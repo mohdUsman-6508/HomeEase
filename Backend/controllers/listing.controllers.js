@@ -106,4 +106,59 @@ const getListing = async (req, res, next) => {
   }
 };
 
-export { createListing, getListings, deleteListing, updateListing, getListing };
+const searchListings = async (req, res, next) => {
+  try {
+    const query = req.query;
+
+    const limit = parseInt(query.limit) || 10;
+    const startIndex = parseInt(query.startIndex) || 0;
+    let offer = query.offer;
+    console.log(query);
+    if (offer === undefined || offer === "true") {
+      offer = { $in: [false, undefined] };
+    }
+
+    let furnished = query.furnished;
+    if (furnished === undefined || furnished === "false") {
+      furnished = { $in: [false, true] };
+    }
+
+    let parking = query.parking;
+    if (parking === undefined || parking == "true") {
+      parking = { $in: [false, true] };
+    }
+
+    let type = query.type;
+    if (type === undefined || type === "all") {
+      type = { $in: ["sale", "rent"] };
+    }
+    //TODO: ADD PRICE FILTERING TOO
+    const searchTerm = query.searchTerm || "";
+    const sort = query.sort || "createdAt";
+    const order = query.order || "desc";
+
+    const listings = await Listing.find({
+      name: { $regex: searchTerm, $options: "i" },
+      offer,
+      parking,
+      type,
+      furnished,
+    })
+      .sort({ [sort]: order })
+      .limit(limit)
+      .skip(startIndex);
+
+    return res.status(200).json(listings);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export {
+  createListing,
+  getListings,
+  deleteListing,
+  updateListing,
+  getListing,
+  searchListings,
+};
