@@ -163,8 +163,8 @@ function CreateListing() {
       if (data.success === false) {
         setError(data.message);
       }
-      console.log(data);
-      navigate(`/listing/${data?._id}`);
+      setLoading(false);
+      navigate(`/listing/${data.listing?._id}`);
     } catch (error) {
       setError(error.message);
       setLoading(false);
