@@ -110,10 +110,10 @@ const searchListings = async (req, res, next) => {
   try {
     const query = req.query;
 
-    const limit = parseInt(query.limit) || 10;
+    const limit = parseInt(query.limit) || 6;
     const startIndex = parseInt(query.startIndex) || 0;
     let offer = query.offer;
-    console.log(query);
+
     if (offer === undefined || offer === "true") {
       offer = { $in: [false, undefined] };
     }
@@ -132,7 +132,7 @@ const searchListings = async (req, res, next) => {
     if (type === undefined || type === "all") {
       type = { $in: ["sale", "rent"] };
     }
-    //TODO: ADD PRICE FILTERING TOO
+
     const searchTerm = query.searchTerm || "";
     const sort = query.sort || "createdAt";
     const order = query.order || "desc";

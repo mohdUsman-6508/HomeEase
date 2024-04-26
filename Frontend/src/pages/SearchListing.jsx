@@ -14,7 +14,10 @@ function SearchListing() {
   });
   const [loading, setLoading] = useState(false);
   const [listing, setListing] = useState([]);
+  const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
+
+  console.log(listing);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -51,8 +54,15 @@ function SearchListing() {
       const searchQuery = urlParams.toString();
       const res = await fetch(`/api/listing/getlistings/search?${searchQuery}`);
       const data = await res.json();
-      setListing(data);
+      if (data.success == false) {
+        setLoading(false);
+        return;
+      }
+      if (data.length >= 6) setShowMore(true);
+      else setShowMore(false);
+
       setLoading(false);
+      setListing(data);
     };
 
     fetchListings();
@@ -108,6 +118,20 @@ function SearchListing() {
     console.log(searchQuery);
   };
 
+  const handleShowMore = async () => {
+    const numberOfListings = listing.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/listing/getlistings/search?${searchQuery}`);
+    const data = await res.json();
+
+    if (data.length < 6) setShowMore(false);
+    else setShowMore(true);
+
+    setListing([...listing, ...data]);
+  };
   console.log(listing);
   return (
     <div className="flex flex-col md:flex-row">
@@ -239,6 +263,15 @@ function SearchListing() {
             listing.map((listing) => (
               <ListingCard key={listing._id} listing={listing} />
             ))}
+
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className="text-green-700 --6 w-full text-center text-xl mb-3"
+            >
+              Show more
+            </button>
+          )}
         </div>
       </div>
     </div>
