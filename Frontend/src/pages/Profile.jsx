@@ -288,20 +288,26 @@ function Profile() {
         listings.length > 0 &&
         listings.map((listing) => (
           <div key={listing._id} className="">
-            <Link
-              to={`/listing/${listing._id}`}
-              className="flex justify-between items-center p-3 border border-gray-200 border-r-2 my-3 gap-4"
-            >
-              <img
-                className="w-24 h-20 rounded-md object-cover"
-                src={listing.imageURLS[0]}
-                alt="listing image"
-              />
-              <p className="font-semibold truncate flex-1">{listing.name}</p>
+            <div className="flex justify-between items-center p-3 border border-gray-200 border-r-2 my-3 gap-4">
+              <Link to={`/listing/${listing._id}`}>
+                <img
+                  className="w-24 h-20 rounded-md object-cover"
+                  src={listing.imageURLS[0]}
+                  alt="listing image"
+                />
+              </Link>
+
+              <Link
+                className="font-semibold truncate flex-1"
+                to={`/listing/${listing._id}`}
+              >
+                <p className="font-semibold truncate flex-1">{listing.name}</p>{" "}
+              </Link>
+
               <div className="flex flex-col">
                 <span
                   onClick={() => handleDeleteListing(listing._id)}
-                  className="text-red-700 uppercase hover:opacity-85"
+                  className="text-red-700 uppercase hover:opacity-85 hover:cursor-pointer"
                 >
                   Delete
                 </span>
@@ -311,7 +317,7 @@ function Profile() {
                   </span>
                 </Link>
               </div>
-            </Link>
+            </div>
           </div>
         ))}
     </div>
