@@ -94,7 +94,9 @@ function Listing() {
             <p className="text-2xl font-semibold">
               {listingData.name} - $
               {listingData.offer
-                ? listingData.discountPrice.toLocaleString("en-US")
+                ? `${
+                    listingData.regularPrice - listingData.discountPrice
+                  }`.toLocaleString("en-US")
                 : listingData.regularPrice.toLocaleString("en-US")}
               {listingData.type === "rent" && " / month"}
             </p>
@@ -108,7 +110,7 @@ function Listing() {
               </p>
               {listingData.offer && (
                 <p className="bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                  ${+listingData.regularPrice - +listingData.discountPrice}
+                  {`${+listingData.discountPrice} discount`}
                 </p>
               )}
             </div>

@@ -301,7 +301,9 @@ function CreateListing() {
               />
               <div className="flex flex-col text-center">
                 <p>Regular price</p>
-                <span className="text-xs">($ / month)</span>
+                <span className="text-xs">
+                  {formData.type === "rent" ? "($/month)" : "( $ )"}
+                </span>
               </div>
             </div>
             {formData.offer && (
@@ -317,7 +319,7 @@ function CreateListing() {
                 />
                 <div className="flex flex-col text-center">
                   <p>Discounted price</p>
-                  <span className="text-xs">($ / month)</span>
+                  <span className="text-xs">( $ )</span>
                 </div>
               </div>
             )}
