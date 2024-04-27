@@ -242,7 +242,7 @@ function SearchListing() {
         </form>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 max-h-screen overflow-y-scroll">
         <h1 className="text-3xl font-semibold p-3 text-slate-600">
           Listing results:
         </h1>
