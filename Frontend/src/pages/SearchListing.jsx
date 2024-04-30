@@ -17,8 +17,6 @@ function SearchListing() {
   const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
 
-  console.log(listing);
-
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermURL = urlParams.get("searchTerm");
@@ -114,8 +112,6 @@ function SearchListing() {
 
     const searchQuery = urlParams.toString();
     navigate(`/listing/search?${searchQuery}`);
-
-    console.log(searchQuery);
   };
 
   const handleShowMore = async () => {
@@ -132,7 +128,7 @@ function SearchListing() {
 
     setListing([...listing, ...data]);
   };
-  console.log(listing);
+
   return (
     <div className="flex flex-col md:flex-row">
       <div className="p-8 border-b-2 md:border-r-2 md:min-h-screen">

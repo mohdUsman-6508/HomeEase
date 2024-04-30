@@ -14,7 +14,6 @@ function Contact({ listingData }) {
         return;
       }
       setLandlord(data);
-      console.log(data);
     };
     getLandlord();
   }, [listingData.userRef]);

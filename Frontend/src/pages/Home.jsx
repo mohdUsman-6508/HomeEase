@@ -36,7 +36,7 @@ function Home() {
         setRentListing(data);
         fetchSaleListing();
       } catch (error) {
-        console.log(error);
+        error;
       }
     };
 

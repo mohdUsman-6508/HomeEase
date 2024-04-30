@@ -34,7 +34,7 @@ function Profile() {
   const [listings, setListings] = useState([]);
   const [deleteListingError, setDeleteListingError] = useState(false);
   const [showlisting, setShowlisting] = useState(false);
-  console.log(listings);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

@@ -31,14 +31,12 @@ function CreateListing() {
     userRef: currentUser.rest._id,
   });
 
-  console.log(currentUser.rest._id);
   const [files, setFiles] = useState([]);
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  console.log(formData);
   const handleImageSubmit = (e) => {
     let filesLength = files.length;
     let previousImagesInFormLength = formData.imageURLS.length;

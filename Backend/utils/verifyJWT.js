@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 const verifyJWT = async (req, res, next) => {
   try {
     const token = req.cookies?.accessToken;
-    console.log(req.cookies);
+
     if (!token) return next(errorHandler(401, "Unauthorized access!"));
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
 

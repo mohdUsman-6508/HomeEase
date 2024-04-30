@@ -51,7 +51,6 @@ const signin = async (req, res, next) => {
 const generateToken = async (user) => {
   const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
   const { password: pswrd, ...rest } = user._doc;
-  console.log(rest);
   return { token, rest };
 };
 //
